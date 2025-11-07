@@ -3,7 +3,7 @@ from datasets import load_dataset
 import torch
 
 # 1. Model ve Tokenizer Yükleme
-model_name = "distilgpt2"
+model_name = "gpt2-large"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(model_name)
 
@@ -28,7 +28,7 @@ tokenized_datasets = dataset.map(
 )
 
 # Veri setini bloklara ayırma (GPT-2 gibi modeller için yaygın bir yöntem)
-block_size = 128 # Tokenizer'ın max_length'inden küçük veya eşit olmalı
+block_size = 512 # Tokenizer'ın max_length'inden küçük veya eşit olmalı
 
 def group_texts(examples):
     # Tüm metinleri birleştir
@@ -54,7 +54,7 @@ lm_datasets = tokenized_datasets.map(
 training_args = TrainingArguments(
     output_dir="./fine_tuned_model", # Eğitilmiş modelin kaydedileceği dizin
     overwrite_output_dir=True,
-    num_train_epochs=3, # Eğitim epoch sayısı
+    num_train_epochs=5, # Eğitim epoch sayısı
     per_device_train_batch_size=2, # GPU başına batch boyutu (bellek durumuna göre ayarlanabilir)
     save_steps=10_000, # Her 10.000 adımda bir modeli kaydet
     save_total_limit=2, # Sadece son 2 checkpoint'i sakla

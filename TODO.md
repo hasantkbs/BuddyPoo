@@ -20,3 +20,15 @@ The goal is to support story generation from prompts in multiple languages (e.g.
 3.  **Testing:**
     *   Restart the `uvicorn` server.
     *   Test the endpoint with prompts in different languages (e.g., Turkish, English, and another language if possible) to ensure the translation and generation process works correctly.
+
+## Future Improvements for Story Generation Quality
+
+1.  **Refine Post-processing:**
+    *   Implement more aggressive sentence filtering to remove descriptive or meta-commentary text.
+    *   Implement improved repetition detection to identify and remove similar sentences.
+
+2.  **Fine-tuning Data Enhancement:**
+    *   Consider adding negative examples to the fine-tuning data to explicitly teach the model what kind of text not to generate.
+
+3.  **Model Exploration (if resources allow):**
+    *   Explore even larger and more powerful open-source models if current quality is still not sufficient and computational resources become available.
