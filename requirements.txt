@@ -3,4 +3,7 @@ torch
 fastapi
 uvicorn
 datasets
-googletrans-py
+peft
+bitsandbytes
+accelerate
+sentencepiece

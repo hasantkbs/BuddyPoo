@@ -1,34 +1,34 @@
-# TODO: Implement Hybrid Translation Model for Multilingual Story Generation
+# Proje: LLaMA 3.1 8B ile Gelişmiş Hikaye Üretimi
 
-The goal is to support story generation from prompts in multiple languages (e.g., Turkish, English, Chinese).
+Bu TODO listesi, mevcut modelin LLaMA 3.1 8B ile değiştirilmesi ve yeni veri setleriyle yeniden eğitilmesi sürecini takip eder.
 
-## Plan
+## Adım 1: Proje Temizliği ve Hazırlık
 
-1.  **Add Translation Library:**
-    *   Add the `googletrans-py` library to the `requirements.txt` file.
-    *   Install the new requirement (`pip install -r requirements.txt`).
+- [x] Mevcut fine-tuned modelin (`fine_tuned_model`) silinmesi.
+- [x] Eski log dosyalarının (`train_error.log`, `train_output.log`) silinmesi.
+- [x] MLflow ve WandB log klasörlerinin (`mlruns`, `wandb`) silinmesi.
+- [x] Eski veri işleme ve eğitim betiklerinin (`process_kaggle_data.py`, `train_model.py`) silinmesi.
+- [x] `requirements.txt` dosyasının LLaMA 3.1 8B ve QLoRA/PEFT için güncellenmesi.
 
-2.  **Update `main.py` with Translation Logic:**
-    *   Import the `Translator` from the `googletrans` library.
-    *   In the `generate_story_api` function, implement the following logic:
-        1.  **Detect Language:** Detect the language of the incoming prompt (`story_prompt.prompt`).
-        2.  **Translate to English (if necessary):** If the detected language is not English, translate the prompt text to English.
-        3.  **Generate Story:** Send the (now guaranteed to be English) prompt to the story generation model.
-        4.  **Translate Back to Original Language (if necessary):** If the original prompt was not in English, translate the generated story back to the original language.
-        5.  **Return Story:** Return the final story in the user's original language.
+## Adım 2: Veri Setlerinin Hazırlanması
 
-3.  **Testing:**
-    *   Restart the `uvicorn` server.
-    *   Test the endpoint with prompts in different languages (e.g., Turkish, English, and another language if possible) to ensure the translation and generation process works correctly.
+- [x] Children's Book Test (CBT) veri setinin indirilmesi ve işlenmesi.
+- [x] Project Gutenberg - Children's Literature veri setinin indirilmesi ve işlenmesi.
+- [x] Kaggle Storytelling veri setinin indirilmesi ve işlenmesi.
+- [x] Tüm veri setlerini birleştirip fine-tuning için tek bir formatta hazırlanması.
 
-## Future Improvements for Story Generation Quality
+## Adım 3: Model Eğitimi (Fine-tuning)
 
-1.  **Refine Post-processing:**
-    *   Implement more aggressive sentence filtering to remove descriptive or meta-commentary text.
-    *   Implement improved repetition detection to identify and remove similar sentences.
+- [x] LLaMA 3.1 8B modelini QLoRA/PEFT ile fine-tuning yapmak için yeni bir eğitim betiğinin (`train_llama.py`) oluşturulması.
+- [x] Modelin hazırlanan veri seti ile eğitilmesi.
+- [x] Eğitim sürecinin takip edilmesi ve en iyi modelin kaydedilmesi.
 
-2.  **Fine-tuning Data Enhancement:**
-    *   Consider adding negative examples to the fine-tuning data to explicitly teach the model what kind of text not to generate.
+## Adım 4: API Entegrasyonu ve Test
 
-3.  **Model Exploration (if resources allow):**
-    *   Explore even larger and more powerful open-source models if current quality is still not sufficient and computational resources become available.
+- [x] `main.py` dosyasının, yeni fine-tune edilmiş LLaMA modelini kullanacak şekilde güncellenmesi.
+- [x] API'nin yeni modelle doğru çalıştığından emin olmak için testlerin yapılması.
+- [ ] (Opsiyonel) Çok dilli desteğin yeni modele entegre edilmesi.
+
+## Gelecek İyileştirmeler
+
+- [ ] Çocuk hikayesi olduğu için şiddet, cinsellik vb. +18 unsurlara dikkat etmeliyiz hikaye oluştururken.
