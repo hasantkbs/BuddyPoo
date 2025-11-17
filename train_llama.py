@@ -12,7 +12,8 @@ def train():
         load_in_4bit=True,
         bnb_4bit_use_double_quant=True,
         bnb_4bit_quant_type="nf4",
-        bnb_4bit_compute_dtype=torch.bfloat16
+        bnb_4bit_compute_dtype=torch.bfloat16,
+        llm_int8_enable_fp32_cpu_offload=True
     )
 
     # Load tokenizer and model
@@ -62,7 +63,7 @@ def train():
     # Training arguments
     training_args = TrainingArguments(
         output_dir="./llama_fine_tuned_model",
-        num_train_epochs=1,
+        num_train_epochs=3,
         per_device_train_batch_size=4,
         gradient_accumulation_steps=1,
         learning_rate=2e-4,

@@ -6,6 +6,30 @@ from typing import Literal
 import torch
 import re
 
+# Define a list of keywords that would make a story inappropriate for children
+INAPPROPRIATE_KEYWORDS = [
+    "death", "killed", "murder", "violence", "bloody", "sex", "sexual", "drugs", "alcohol",
+    "curse", "swore", "swearing", "hate", "revenge", "torture", "scream", "terror", "fear",
+    "monster", "demon", "devil", "ghost", "witch", "evil", "darkness", "nightmare",
+    "weapon", "knife", "sword", "gun", "fight", "battle", "war", "destroy", "destroyer",
+    "suffer", "pain", "agony", "cry", "weep", "sadness", "despair", "hopeless",
+    "slave", "slavery", "prison", "jail", "crime", "criminal", "steal", "rob",
+    "lie", "lying", "cheat", "cheating", "betray", "betrayal", "deceive", "deception",
+    "greed", "jealousy", "envy", "pride", "wrath", "gluttony", "lust", "sloth",
+    "hell", "damn", "f***" # Added common explicit words
+]
+
+def is_appropriate_content(story_text, keywords=INAPPROPRIATE_KEYWORDS):
+    """
+    Checks if the story text contains any inappropriate keywords.
+    Returns True if appropriate, False otherwise.
+    """
+    story_text_lower = story_text.lower()
+    for keyword in keywords:
+        if keyword in story_text_lower:
+            return False
+    return True
+
 app = FastAPI()
 
 # Model and tokenizer names
@@ -107,19 +131,8 @@ async def generate_story_api(story_prompt: StoryPrompt):
     # Post-process the story
     cleaned_story = post_process_story(generated_text)
 
+    # Final check for inappropriate content
+    if not is_appropriate_content(cleaned_story) and story_prompt.story_type == "children":
+        return {"story": "I'm sorry, but I cannot generate a children's story with potentially inappropriate content. Please try a different prompt."}
+
     return {"story": cleaned_story}
-
-class UserInteraction(BaseModel):
-    user_id: str
-    story_prompt: str
-    rating: str
-
-@app.post("/learn_preference")
-async def learn_preference_api(interaction: UserInteraction):
-    """
-    This is a placeholder function to demonstrate how user preferences can be learned.
-    In a real application, this would store the interaction in a database
-    and use it to build a recommendation model.
-    """
-    print(f"Learning from user {interaction.user_id}'s interaction with story: '{interaction.story_prompt}'. Rating: {interaction.rating}")
-    return {"status": "success"}
