@@ -1,1 +1,7 @@
 __pycache__/
+<<<<<<< HEAD
+=======
+fine_tuned_model/
+mlruns/
+wandb/
+>>>>>>> c82535391d3ffdbc949cf7433cf4febfa59f8fac
